@@ -1,0 +1,14 @@
+# =============== #
+# Unity generated #
+# =============== #
+Temp
+obj
+summary
+Library
+Assets/ML-Agents/Plugins
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+*.csproj
+*.unityproj
+*.sln
