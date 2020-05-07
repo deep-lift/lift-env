@@ -1,1 +1,5 @@
-sceneSetups: []
+sceneSetups:
+- path: Assets/Elevator/elevator_rl.unity
+  isLoaded: 1
+  isActive: 1
+  isSubScene: 0

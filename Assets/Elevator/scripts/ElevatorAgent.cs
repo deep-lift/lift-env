@@ -375,7 +375,7 @@ public class ElevatorAgent : Agent
     {
         AddReward(-0.01f);
         recv_action = (MOVE_STATE)Mathf.FloorToInt(vectorAction[0]);
-
+        reqfloor = -1;
 
         int floor, nextfloor;
         GetFloor(out floor, out nextfloor);
@@ -393,10 +393,10 @@ public class ElevatorAgent : Agent
                     if (fsm.GetCurrentState() == State.NormalMove)
                     {
 
-                        //if(listPassenger.Count==0&&f.listPassenger.Count>0)
-                        //{
-                        //    AddReward(0.02f);
-                        //}
+                        if (listPassenger.Count == 0 && f.listPassenger.Count > 0)
+                        {
+                            AddReward(0.01f);
+                        }
 
                     }
 
@@ -428,7 +428,7 @@ public class ElevatorAgent : Agent
 
                 if (floor == 0)
                 {
-                    // AddReward(-0.01f);
+                    AddReward(-0.01f);
                     return;
                 }
 
@@ -454,16 +454,24 @@ public class ElevatorAgent : Agent
 
                 if (!floorBtnflag[nextfloor] && f.listPassenger.Count == 0)
                     AddReward(0.02f);
-                else if (f.IsCallRequest(recv_action))
+                else if (floorBtnflag[nextfloor]||f.IsCallRequest(recv_action))
                 {
-                    AddReward(-0.02f);
+                    AddReward(-0.042f);
                 }
 
+                if (moveDirState != recv_action)
                 {
-
-                    SetDirction(recv_action);
-                    fsm.StateTransition(Event.Call);
+                    if (floor != 0 && listPassenger.Count > 0 && moveDirState != MOVE_STATE.Stop)
+                    {
+                        AddReward(-0.04f);
+                        return;
+                    }
                 }
+
+
+                SetDirction(recv_action);
+                fsm.StateTransition(Event.Call);
+                
 
                 break;
 
@@ -472,7 +480,7 @@ public class ElevatorAgent : Agent
 
                 if (floor == (ElevatorAcademy.floors - 1))
                 {
-                    // AddReward(-0.01f);
+                    AddReward(-0.01f);
                     return;
                 }
 
@@ -496,20 +504,28 @@ public class ElevatorAgent : Agent
                 }
 
 
+             
+
+                if (!floorBtnflag[nextfloor] && f.listPassenger.Count == 0)
+                    AddReward(0.02f);
+                else if (floorBtnflag[nextfloor]||f.IsCallRequest(recv_action))
                 {
+                    AddReward(-0.04f);
 
-
-                    if (!floorBtnflag[nextfloor] && f.listPassenger.Count == 0)
-                        AddReward(0.02f);
-                    else if (f.IsCallRequest(recv_action))
-                    {
-                        AddReward(-0.2f);
-                    }
+                }
 
                
+                if(moveDirState != recv_action)
+                {
+                    if (floor != (ElevatorAcademy.floors - 1)&& listPassenger.Count>0&& moveDirState != MOVE_STATE.Stop)
+                    {
+                        AddReward(-0.04f);
+                        return;
+                    }
                 }
 
                 SetDirction(recv_action);
+
                 fsm.StateTransition(Event.Call);
                 break;
         }
@@ -618,7 +634,7 @@ public class ElevatorAgent : Agent
             return;
         }
 
-        float delta = Time.fixedTime - preUpdateTime;
+        float delta = Time.deltaTime;//Time.fixedTime- preUpdateTime;
 
         preUpdateTime = Time.fixedTime;
 
@@ -648,7 +664,7 @@ public class ElevatorAgent : Agent
             //coolTime = preUpdateTime + ElevatorAcademy.turn;
         }
 
-        currentFloor = (car.transform.localPosition.y / ElevatorAcademy.height)+0.01f;
+        currentFloor = (car.transform.localPosition.y / ElevatorAcademy.height);
         CheckFloor();
 
     }
@@ -672,7 +688,7 @@ public class ElevatorAgent : Agent
                 break;
 
             case MOVE_STATE.Down:
-                floor = Mathf.CeilToInt(currentFloor);
+                floor = Mathf.CeilToInt(currentFloor-0.1f);
                 nextfloor = Mathf.RoundToInt(currentFloor);
                 break;
         }

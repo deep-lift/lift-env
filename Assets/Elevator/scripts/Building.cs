@@ -7,7 +7,7 @@ using MLAgents;
 
 public class Building : MonoBehaviour
 {
-
+   
     static ElevatorAcademy academy;
     public static Brain elevatorBrain;
 
@@ -43,6 +43,17 @@ public class Building : MonoBehaviour
 
     int success = 0;
     int fail = 0;
+
+    struct PassengerSpawn
+    {
+        public int step;
+        public int floor;
+        public int passengercount;
+    }
+
+
+    int scenario_index = 0;
+    List<PassengerSpawn> passenger_scenario = new List<PassengerSpawn>();
 
 
     private void Start()
@@ -85,6 +96,7 @@ public class Building : MonoBehaviour
         destPassenger = 0;
         simulattion_time = 0;
         addPassenger = 0;
+        scenario_index = 0;
 
 
         int dist = 4;
@@ -170,6 +182,7 @@ public class Building : MonoBehaviour
     {
 
         SimulationFloorPassenger();
+
         SimulationEnterElevator();
 
         UpdatePos();
@@ -216,24 +229,62 @@ public class Building : MonoBehaviour
 
     public void SimulationFloorPassenger()
     {
+        if (academy.GetEpisodeCount() == 1)
+        {
+            PassengerRandomSpawn();
+        }
+        else
+        {
+            PassengerScenarioSpawn();
+        }
+
+
+    }
+
+    public void PassengerScenarioSpawn()
+    {
+
+
+      
+
+
+        while (scenario_index < passenger_scenario.Count)
+        {
+            if(passenger_scenario[scenario_index].step>=academy.GetStepCount())
+            {
+                listFloor[passenger_scenario[scenario_index].floor].GetComponent<Buildfloor>().AddPassenger(passenger_scenario[scenario_index].passengercount);
+                addPassenger += passenger_scenario[scenario_index].passengercount;
+                restPassenger -= passenger_scenario[scenario_index].passengercount;
+                ++scenario_index;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+    }
+
+    public void PassengerRandomSpawn()
+    {
         if (simulattion_time > Time.fixedTime)
             return;
 
         if (currentPassenger > episodeTotalPassenger * 0.3)
             return;
 
-        int newPassenger = Random.Range(0, restPassenger+1);
+        int newPassenger = Random.Range(0, restPassenger + 1);
 
         int[] floorPassenger = new int[listFloor.Count];
 
 
 
-        floorPassenger[0] = Random.Range(0, (int)(newPassenger*0.8f));
+        floorPassenger[0] = Random.Range(0, (int)(newPassenger * 0.8f));
 
         int rest = newPassenger - floorPassenger[0];
 
 
-        while(rest>0)
+        while (rest > 0)
         {
             int floor = Random.Range(1, listFloor.Count);
             int passenger = Random.Range(1, rest + 1);
@@ -241,21 +292,33 @@ public class Building : MonoBehaviour
             floorPassenger[floor] = passenger;
         }
 
-       
 
-        for (int i=0; i<listFloor.Count;++i)
+        for (int i = 0; i < listFloor.Count; ++i)
         {
             if (floorPassenger[i] > 0)
             {
                 listFloor[i].GetComponent<Buildfloor>().AddPassenger(floorPassenger[i]);
                 addPassenger += floorPassenger[i];
                 restPassenger -= floorPassenger[i];
+
+                if(academy.GetEpisodeCount()==1)
+                {
+                    PassengerSpawn spawn;
+                    spawn.floor = i;
+                    spawn.step = academy.GetStepCount();
+                    spawn.passengercount = floorPassenger[i];
+
+                    passenger_scenario.Add(spawn);
+                }
+                 
             }
 
-           
+
         }
 
         simulattion_time = Time.fixedTime + 5f;
+
+
     }
 
 
