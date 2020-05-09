@@ -26,11 +26,11 @@ import torch
 
 n_agent = 4
 agent_observation_size = 46
-state_size = 46*4
-action_size = 3
 hidden_size = 200
 
-load_model = False
+load_model = Falseon_size = 46
+state_size = 46*4
+action_size = 3
 train_mode = True
 
 batch_size = 128

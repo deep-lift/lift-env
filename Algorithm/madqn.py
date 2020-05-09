@@ -47,7 +47,7 @@ save_interval = 1000
 
 date_time = datetime.datetime.now().strftime('%Y%m%d-%H-%M-%S')
 
-game = 'Env'
+game = '../Env'
 env_name = game + "/Elevator"
 
 # save_path = '../saved_models/' + game + '/' + date_time + '_DDPG'
