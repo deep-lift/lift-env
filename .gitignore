@@ -1,8 +1,9 @@
 /Assets/ML-Agents/Plugins
 /Assets/GridWorld
-./idea
-./vs
+/.idea
+/.vs
 saved_models/
 Temp/
 runs/
 Algorithms/runs
+Algorithms/__pycache__
