@@ -111,10 +111,12 @@ public class Buildfloor : MonoBehaviour
         textPassenger.text = passengerCount.ToString();
     }
 
-    public void AddPassenger(int passenger)
+    public List<int> AddPassenger(int passenger)
     {
         passengerCount += passenger;
         textPassenger.text = passengerCount.ToString();
+
+        List<int> destList = new List<int>();
 
         for (int i = 0; i < passenger; ++i)
         {
@@ -125,8 +127,31 @@ public class Buildfloor : MonoBehaviour
             {
                 p.destFloor = Random.Range(0,ElevatorAcademy.floors);
                 if (p.destFloor != p.startFloor)
-                    break;      
+                {
+                    destList.Add(p.destFloor);
+                    break;
+                }
             }           
+            listPassenger.Add(p);
+        }
+
+        textPassenger.text = listPassenger.Count.ToString();
+
+        ChkUpDownButton();
+
+        return destList;
+    }
+
+    public void AddPassenger(List<int> destList)
+    {
+        passengerCount += destList.Count;
+        textPassenger.text = passengerCount.ToString();
+
+        for (int i = 0; i < destList.Count; ++i)
+        {
+            ElevatorPassenger p = ElevatorPassenger.s_Pooler.Alloc();
+            p.startFloor = floorNo;
+            p.destFloor = destList[i];
             listPassenger.Add(p);
         }
 

@@ -48,7 +48,7 @@ public class Building : MonoBehaviour
     {
         public int step;
         public int floor;
-        public int passengercount;
+        public List<int> passenger_destfloor;
     }
 
 
@@ -244,17 +244,13 @@ public class Building : MonoBehaviour
     public void PassengerScenarioSpawn()
     {
 
-
-      
-
-
         while (scenario_index < passenger_scenario.Count)
         {
-            if(passenger_scenario[scenario_index].step>=academy.GetStepCount())
+            if(passenger_scenario[scenario_index].step<=academy.GetStepCount())
             {
-                listFloor[passenger_scenario[scenario_index].floor].GetComponent<Buildfloor>().AddPassenger(passenger_scenario[scenario_index].passengercount);
-                addPassenger += passenger_scenario[scenario_index].passengercount;
-                restPassenger -= passenger_scenario[scenario_index].passengercount;
+                listFloor[passenger_scenario[scenario_index].floor].GetComponent<Buildfloor>().AddPassenger(passenger_scenario[scenario_index].passenger_destfloor);
+                addPassenger += passenger_scenario[scenario_index].passenger_destfloor.Count;
+                restPassenger -= passenger_scenario[scenario_index].passenger_destfloor.Count;
                 ++scenario_index;
             }
             else
@@ -297,7 +293,7 @@ public class Building : MonoBehaviour
         {
             if (floorPassenger[i] > 0)
             {
-                listFloor[i].GetComponent<Buildfloor>().AddPassenger(floorPassenger[i]);
+                var destlist = listFloor[i].GetComponent<Buildfloor>().AddPassenger(floorPassenger[i]);
                 addPassenger += floorPassenger[i];
                 restPassenger -= floorPassenger[i];
 
@@ -306,7 +302,7 @@ public class Building : MonoBehaviour
                     PassengerSpawn spawn;
                     spawn.floor = i;
                     spawn.step = academy.GetStepCount();
-                    spawn.passengercount = floorPassenger[i];
+                    spawn.passenger_destfloor = destlist;
 
                     passenger_scenario.Add(spawn);
                 }

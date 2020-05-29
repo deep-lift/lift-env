@@ -4,3 +4,5 @@
 ./vs
 saved_models/
 Temp/
+runs/
+Algorithms/runs

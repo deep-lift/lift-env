@@ -10,8 +10,6 @@ ScriptsOnlyBuild:
     - VerticalLine
     Unity.2D.Tilemap.Editor.dll:
     - UnityEditor.Tilemaps.GridPaintingState
-    - UnityEditor.Tilemaps.GridPaletteBrushes
-    - UnityEditor.Tilemaps.GridPalettes
     - UnityEditor.Tilemaps.SceneViewGridManager
     - UnityEditor.Tilemaps.TileDragAndDropManager
     Unity.Rider.Editor.dll:
@@ -68,31 +66,31 @@ ScriptsOnlyBuild:
     - Class: 109
       Script: {instanceID: 0}
     - Class: 114
+      Script: {instanceID: 11570}
+    - Class: 114
+      Script: {instanceID: 11898}
+    - Class: 114
       Script: {instanceID: 11982}
     - Class: 114
-      Script: {instanceID: 12306}
+      Script: {instanceID: 12002}
     - Class: 114
-      Script: {instanceID: 12390}
+      Script: {instanceID: 12272}
     - Class: 114
-      Script: {instanceID: 12410}
+      Script: {instanceID: 12678}
     - Class: 114
-      Script: {instanceID: 12672}
+      Script: {instanceID: 12738}
     - Class: 114
-      Script: {instanceID: 13072}
+      Script: {instanceID: 12754}
     - Class: 114
-      Script: {instanceID: 13128}
+      Script: {instanceID: 13022}
     - Class: 114
-      Script: {instanceID: 13144}
+      Script: {instanceID: 13168}
     - Class: 114
-      Script: {instanceID: 13410}
+      Script: {instanceID: 13228}
     - Class: 114
-      Script: {instanceID: 13554}
+      Script: {instanceID: 13320}
     - Class: 114
-      Script: {instanceID: 13614}
-    - Class: 114
-      Script: {instanceID: 13706}
-    - Class: 114
-      Script: {instanceID: 13812}
+      Script: {instanceID: 13428}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 120
